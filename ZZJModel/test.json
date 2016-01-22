@@ -1,0 +1,40 @@
+{
+    "code": 0,
+    "msg": "",
+    "result": {
+        "room": {
+            "id": "5",
+            "uid": "78",
+            "house": 0,
+            "start_time": "2015-11-28",
+            "city": "上海",
+            "region": "长宁",
+            "address": "仁达商务楼",
+            "summary": "祖安求辅助",
+            "pricemin": 3000,
+            "moneymin": 2000,
+            "longitude": "121.43660700",
+            "latitude": "31.21492900",
+            "comment_count": 19,
+            "photo_count": 7,
+            "subway_station": "交通大学",
+            "subway_line": "11号线",
+            "status": 0,
+            "format_time": "11-27",
+            "create_time": "04-13",
+            "last_modify_time": "2015-11-27 18:33:51",
+            "dateDetail": "11月28日入住",
+            "pricesection": "预算 2000",
+            "cost1": 2000,
+            "cost2": null,
+            "localization": "长宁 11号线 交通大学",
+            "content": "祖安求辅助"
+        },
+        "content": {
+            "id": "5",
+            "content": "祖安求辅助",
+            "show_content": true
+        },
+        "show_content": 1233
+    }
+}
