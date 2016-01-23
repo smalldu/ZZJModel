@@ -152,7 +152,7 @@ class ZZContent: NSObject{
 
 Room 比较雷同 属性较多久不贴了 
 
-目前库还有点问题 ，没办法处理Bool类型，setValue不能给他赋值，objc_setAssociatedObject也没用 。Bool对应的对象类型是NSNumber 这块还在考虑怎么处理 ，毕竟非科班出身，毕竟太菜。如果谁有好的idea，点一下 ，不胜感激！
+目前库还有点问题 ，没办法处理Bool类型，setValue不能给他赋值，objc_setAssociatedObject也没用 。Bool对应的对象类型是NSNumber 这块还在考虑怎么处理 。如果谁有好的idea，点一下 ，不胜感激！
 
 那么怎么实现的呢，也很简单就一个文件
 
