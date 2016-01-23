@@ -16,16 +16,16 @@ class ZZAll: NSObject{
     var code:NSNumber?
     var msg:String?
     var result:ZZResult?
-    
-
+    var station:[String]?
+    var items:[ZZContent]?
     
     /**
      根据Key获取实体相关信息
      
      - returns: 字典
      */
-    override func zz_modelPropertyClass()->[String:NSObject]?{
-        return ["result":ZZResult()]
+    override func zz_modelPropertyClass()->[String:AnyClass]?{
+        return ["result":ZZResult.self,"items":ZZContent.self]  //传入对应类型
     }
     
 }

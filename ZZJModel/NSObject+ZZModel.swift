@@ -22,7 +22,7 @@ public enum zz_type :Int{
     case Unknown
 }
 
-
+private let zz_queue = dispatch_queue_create("zz_zzjmodel_queie_serial", DISPATCH_QUEUE_SERIAL)
 extension NSObject{
     
     /**
@@ -48,6 +48,7 @@ extension NSObject{
     static func zz_dicToModel<T:NSObject>(dic:[String:AnyObject])->T{
         let t = T()
 //        print(self.classForCoder())
+        let properties = t.zz_modelPropertyClass()
         for (k,v) in dic{
             if t.zz_getVariableWithClass(T.self, varName: k){ //如果存在这个属性
                 if t.zz_isBasic(t.zz_getType(v)){
@@ -57,14 +58,16 @@ extension NSObject{
                     t.setValue(v,forKey: k)
                 }else{
                     //复杂类型
-                    if t.zz_getType(v) == .Dictionary{
+                    let type = t.zz_getType(v)
+                    if type == .Dictionary{
                         //是一个对象类型
                         if let dic1 = v as? [String : AnyObject]{
                             if t.respondsToSelector("zz_modelPropertyClass"){
-                                if let properties = t.zz_modelPropertyClass(){
+                                if let properties = properties{
                                     if  t.valueForKey(k) == nil{
                                         //初始化
-                                        t.setValue(properties[k], forKey: k)
+                                        let obj = (properties[k] as! NSObject.Type).init()
+                                        t.setValue(obj, forKey: k)
                                     }
                                 }
                             }
@@ -72,7 +75,32 @@ extension NSObject{
                                 obj.setDicValue(dic1) //有对象就递归
                             }
                         }
-//                        print(v)
+                    }else if type == .Array{
+                        //数组类型
+                        if let arr = v as? [AnyObject]{
+                            if !arr.isEmpty {
+                                if t.zz_isBasic(t.zz_getType(arr.first!)) {
+                                    //数组中的内容是基本类型
+                                    t.setValue(arr, forKey: k)
+                                }else{
+                                    if t.zz_getType(arr.first!) == .Dictionary{
+                                        //对象数组
+                                        var objs:[NSObject] = []
+                                        for dic in arr{
+                                            if let properties = properties{
+                                            let obj = (properties[k] as! NSObject.Type).init()
+                                            objs.append(obj)
+                                                dispatch_async(zz_queue) {
+                                                   //串行对列执行
+                                                   obj.setDicValue(dic as! [String : AnyObject])
+                                                }
+                                            }
+                                        }
+                                        t.setValue(objs, forKey: k)
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             
@@ -94,24 +122,21 @@ extension NSObject{
                 //判断是否存在这个属性
                 if self.zz_isBasic(self.zz_getType(v)){
                     //设置基本类型
-                    
                     if self.zz_getType(v) == .Bool{
-                        
                         //TODO: -Bool类型怎么处理  不懂
-//                        self.setValue(Bool(v as! NSNumber), forKey: k)
+//                      self.setValue(Bool(v as! NSNumber), forKey: k)
                         
                     }else{
                         self.setValue(v, forKey: k)
                     }
-                    
-                    
                 }else if self.zz_getType(v) == .Dictionary{
                     if let dic1 = v as? [String : AnyObject]{
                         if self.respondsToSelector("zz_modelPropertyClass"){
                             if let properties = self.zz_modelPropertyClass(){
                                 if  self.valueForKey(k) == nil{
                                     //初始化
-                                    self.setValue(properties[k], forKey: k)
+                                    let obj = (properties[k] as! NSObject.Type).init()
+                                    self.setValue(obj, forKey: k)
                                 }
                             }
                         }
@@ -124,7 +149,6 @@ extension NSObject{
             }
         }
     }
-    
     
     
     /**
@@ -175,7 +199,7 @@ extension NSObject{
      
      - returns: k , 实体
      */
-    func zz_modelPropertyClass()->[String:NSObject]?{
+    func zz_modelPropertyClass()->[String:AnyClass]?{
         return nil
     }
    

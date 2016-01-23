@@ -16,8 +16,8 @@ class ZZResult: NSObject{
     var room:ZZRoom?
     
 
-    override func zz_modelPropertyClass()->[String:NSObject]?{
-        return ["room":ZZRoom(),
-                "content":ZZContent()]
+    override func zz_modelPropertyClass()->[String:AnyClass]?{
+        return ["room":ZZRoom.self,
+                "content":ZZContent.self]
     }
 }
