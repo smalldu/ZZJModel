@@ -161,7 +161,7 @@ extension NSObject{
      private func zz_getType(v:AnyObject)->zz_type{
         switch v{
         case let number as NSNumber:
-            if number.isBool {
+            if number.zz_isBool {
                 return .Bool
             } else {
                 return .Number
