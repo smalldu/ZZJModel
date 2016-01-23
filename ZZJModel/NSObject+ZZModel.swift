@@ -32,11 +32,11 @@ extension NSObject{
      
      - returns: 模型
      */
-    static func zz_objToModel<T:NSObject>(obj:AnyObject?)->T{
+    static func zz_objToModel(obj:AnyObject?)->NSObject?{
         if let dic = obj as? [String:AnyObject]{
             return zz_dicToModel(dic)
         }
-        return T()
+        return nil
     }
     
     /**
@@ -45,12 +45,14 @@ extension NSObject{
      - parameter dic: 字典
      - returns: 模型
      */
-    static func zz_dicToModel<T:NSObject>(dic:[String:AnyObject])->T{
-        let t = T()
-//        print(self.classForCoder())
+    static func zz_dicToModel(dic:[String:AnyObject])->NSObject?{
+        if dic.first == nil {
+            return nil
+        }
+        let t = (self.classForCoder() as! NSObject.Type).init()
         let properties = t.zz_modelPropertyClass()
         for (k,v) in dic{
-            if t.zz_getVariableWithClass(T.self, varName: k){ //如果存在这个属性
+            if t.zz_getVariableWithClass(self.classForCoder(), varName: k){ //如果存在这个属性
                 if t.zz_isBasic(t.zz_getType(v)){
 //                    print(t.classForCoder)
                     //基础类型 可以直接赋值

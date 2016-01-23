@@ -24,13 +24,13 @@ class ViewController: UIViewController {
                 //任意对象的模型转json  必须是dic
                 print(json)
                 
-                let all = ZZAll.zz_objToModel(json.object) as ZZAll  //这里需要转一下
-                print(all.result)
+                let all = ZZAll.zz_objToModel(json.object) as? ZZAll  //这里需要转一下
+                print(all?.result?.content?.content)
                 
                 if let dic = json.dictionaryObject{
                     
-                    let all1 = ZZAll.zz_dicToModel(dic) as ZZAll  //这里需要转一下
-                    print(all1.items?[0].id)
+                    let all1 = ZZAll.zz_dicToModel(dic) as? ZZAll  //这里需要转一下
+                    print(all1?.items?[0].id)
 
                 }
                 
@@ -40,9 +40,11 @@ class ViewController: UIViewController {
         }
         
         
-//       let  a = (A.self as NSObject.Type).init()
-//        a.setValue("a", forKey: "item")
-//        print(a.valueForKey("item"))
+       let  a = (A.self as NSObject.Type).init()
+        a.setValue("ee", forKey: "str")
+        a.setValue(34, forKey: "num")
+//        a.setValue(true, forKey: "item")  这句会报错
+         print(a.valueForKey("num"))
         
         
     }
@@ -59,12 +61,14 @@ class ViewController: UIViewController {
 
 class  A:NSObject{
     
-    var item:String?
+    var item:Bool?
+    var str:String?
+    var num:NSNumber?
     
-//    override init() {
-//        super.init()
-//    }
-//    
+    override init() {
+        super.init()
+    }
+    
 }
 
 //已知 A.self(返回AnyObject) 怎么给item赋值
